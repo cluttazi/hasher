@@ -1,4 +1,4 @@
-package com.luttazi
+package com.chrisluttazi
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration

@@ -1,4 +1,4 @@
-package com.luttazi
+package com.chrisluttazi
 
 import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.Logging
@@ -14,7 +14,7 @@ import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.directives.PathDirectives.path
 
 import scala.concurrent.Future
-import com.luttazi.HashActor._
+import com.chrisluttazi.HashActor._
 import akka.pattern.ask
 import akka.util.Timeout
 

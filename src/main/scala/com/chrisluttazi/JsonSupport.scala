@@ -1,6 +1,6 @@
-package com.luttazi
+package com.chrisluttazi
 
-import com.luttazi.HashActor.ActionPerformed
+import com.chrisluttazi.HashActor.ActionPerformed
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import spray.json.DefaultJsonProtocol

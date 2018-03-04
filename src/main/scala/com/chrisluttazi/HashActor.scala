@@ -1,4 +1,4 @@
-package com.luttazi
+package com.chrisluttazi
 
 import akka.actor.{ Actor, ActorLogging, Props }
 
