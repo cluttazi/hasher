@@ -1,4 +1,4 @@
-package com.chrisluttazi
+package com.chrisluttazi.hasher
 
 import akka.actor.ActorRef
 import akka.http.scaladsl.marshalling.Marshal
@@ -9,7 +9,7 @@ import org.scalatest.{Matchers, WordSpec}
 
 class HashRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest
   with HashRoutes {
-  override val hashRegistryActor: ActorRef =
+  override val hashActor: ActorRef =
     system.actorOf(HashActor.props, "hashRegistry")
 
   lazy val routes = hashRoutes

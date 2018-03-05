@@ -1,4 +1,4 @@
-package com.chrisluttazi
+package com.chrisluttazi.hasher
 
 import akka.actor.{ Actor, ActorLogging, Props }
 
