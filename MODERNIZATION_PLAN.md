@@ -58,18 +58,85 @@ classic actor, one spray-json trait, one server bootstrap, one route spec.
 ## Prioritized checklist
 
 1. [x] Write this audit (this file).
-2. [ ] Toolchain: sbt 1.11.7 in `project/build.properties`; delete
+2. [x] Toolchain: sbt 1.11.7 in `project/build.properties`; delete
        `sbt-dist/`; make `./sbt` delegate to system sbt; replace
        scalariform plugin with scalafmt, bump sbt-revolver.
-3. [ ] Migrate Scala 2.12.4 → 2.13.18 and Akka 2.5/10.0 →
+3. [x] Migrate Scala 2.12.4 → 2.13.18 and Akka 2.5/10.0 →
        Pekko 1.6.0 / pekko-http 1.3.0; drop unused akka-http-xml;
        replace removed APIs; port test to ScalaTest 3.2 style;
        `sbt test` must pass on Java 21.
-4. [ ] Formatting: `.scalafmt.conf`, run `scalafmtAll`, gate with
-       `scalafmtCheckAll` in CI.
-5. [ ] Housekeeping: `.gitignore`, README (build/run/test instructions).
-6. [ ] CI: JDK 8 → 21; add a format check; keep sbt caching.
-7. [ ] Re-run full build + tests; update this file with Done vs Deferred.
+4. [x] Formatting: `.scalafmt.conf`, run `scalafmtAll`, gate with
+       `scalafmtCheckAll` in CI. (sbt-scalafmt 2.5.5, not 2.6.x —
+       2.6.x requires sbt ≥ 1.12.9.)
+5. [x] Housekeeping: `.gitignore`, README (build/run/test instructions).
+6. [x] CI: JDK 8 → 21; add a format check; keep sbt caching.
+7. [x] Re-run full build + tests; update this file with Done vs Deferred.
+
+## Result — Done vs Deferred
+
+### Done
+
+- **Toolchain**: sbt 0.13.16 → 1.11.7; deleted the committed `sbt-dist/`
+  0.13 launcher (432 lines / one binary jar removed); `./sbt` now
+  delegates to the sbt on PATH; JDK target 8 → 21 (Temurin LTS).
+- **Runtime stack**: Akka 2.5.11 / akka-http 10.0.11 (EOL, pre-BSL) →
+  Apache Pekko 1.6.0 / pekko-http 1.3.0 (Apache-2.0, JDK 21 supported);
+  removed the unused akka-http-xml dependency.
+- **Language**: Scala 2.12.4 → 2.13.18; compile is warning-free under
+  `-deprecation -feature -unchecked -Xlint`.
+- **API replacements**: `ActorMaterializer` + `Http().bindAndHandle` →
+  `Http().newServerAt(...).bind`; `Props[T]` auto-application →
+  `Props[T]()`; explicit types on all implicits; spray-json formats pin
+  their field names.
+- **Tests**: ScalaTest 3.0.1 → 3.2.20 (`AnyWordSpec`,
+  `matchers.should.Matchers`). The response-body assertion now compares
+  parsed JSON instead of a raw string: spray-json's `JsObject` member
+  order flipped with Scala 2.13's `ListMap` semantics, and member order
+  is not part of the JSON contract (RFC 8259).
+- **Formatting**: scalariform (dead) → scalafmt 3.11.4 via
+  sbt-scalafmt 2.5.5, all sources formatted, CI-gated.
+- **CI**: JDK 21, `sbt scalafmtCheckAll scalafmtSbtCheck` then
+  `sbt test`; action majors already current (checkout@v4, setup-java@v4
+  with sbt cache, sbt/setup-sbt@v1) and kept.
+- **Docs**: README rewritten with real build/run/test instructions;
+  `.gitignore` covers `.bsp/`, `.metals/`, `.bloop/`, editor dirs.
+- **Verification**: `sbt test` green on Java 21.0.10; live smoke test —
+  `POST /hash` with `{"body":"cool"}` returns `201 Created` and
+  `{"original":"cool","hashed":"cool"}` on pekko-http 1.3.0.
+
+### Deferred (unchanged from audit)
+
+- **Real hashing in `HashActor`** — behavioral/API change; needs owner
+  decision on algorithm and payload shape.
+- **Scala 3 / Pekko 2.0.0-Mx / ScalaTest 3.3 pre-releases** — not
+  stable yet; revisit when GA.
+- **Typed actors** — style migration, no modernization payoff here.
+
+## PR-style summary
+
+**Modernize hasher: sbt 1.11 / Scala 2.13 / Apache Pekko / JDK 21**
+
+Every part of the 2017-era toolchain was end-of-life and the build could
+not run at all (sbt 0.13 unresolvable, incompatible with modern JDKs).
+This branch makes the project build, test, format-check, and run on
+Java 21 with maintained, Apache-2.0-licensed dependencies, while
+preserving observable behavior (verified by the route spec and a live
+smoke test).
+
+Changes: sbt 1.11.7 (bundled 0.13 launcher deleted) · Scala 2.13.18 ·
+Akka 2.5/10.0 → Pekko 1.6.0/pekko-http 1.3.0 · ScalaTest 3.2.20 ·
+scalariform → scalafmt (CI-gated) · sbt-revolver 0.10.0 · unused
+akka-http-xml removed · removed/deprecated APIs replaced · README and
+.gitignore updated · CI on JDK 21.
+
+Risk areas: JSON object member order in responses changed
+(`{"hashed":...,"original":...}`) — semantically identical, but a
+client doing exact string comparison would notice; server bootstrap now
+uses the Pekko HTTP 1.x API (same host/port/behavior).
+
+Deliberately untouched: the echo "hash" placeholder behavior, actor
+model style (classic), route structure, endpoint contract, license.
+
 
 ## Deferred (explicitly not done, with rationale)
 
