@@ -10,8 +10,12 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import spray.json._
 
-class HashRoutesSpec extends AnyWordSpec with Matchers with ScalaFutures with ScalatestRouteTest
-  with HashRoutes {
+class HashRoutesSpec
+    extends AnyWordSpec
+    with Matchers
+    with ScalaFutures
+    with ScalatestRouteTest
+    with HashRoutes {
   override val hashActor: ActorRef =
     system.actorOf(HashActor.props, "hashRegistry")
 

@@ -1,6 +1,6 @@
 package com.chrisluttazi.hasher
 
-import org.apache.pekko.actor.{ Actor, ActorLogging, Props }
+import org.apache.pekko.actor.{Actor, ActorLogging, Props}
 
 final case class HashRequest(body: String)
 
@@ -17,8 +17,7 @@ class HashActor extends Actor with ActorLogging {
 
   import HashActor._
 
-  def receive: Receive = {
-    case Hash(string) =>
-      sender() ! ActionPerformed(s"$string", s"$string")
+  def receive: Receive = { case Hash(string) =>
+    sender() ! ActionPerformed(s"$string", s"$string")
   }
 }

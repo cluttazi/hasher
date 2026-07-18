@@ -2,7 +2,7 @@ package com.chrisluttazi.hasher
 
 import org.apache.pekko.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import com.chrisluttazi.hasher.HashActor.ActionPerformed
-import spray.json.{ DefaultJsonProtocol, RootJsonFormat }
+import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 trait JsonSupport extends SprayJsonSupport {
 

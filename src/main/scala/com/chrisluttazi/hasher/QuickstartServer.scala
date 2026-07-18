@@ -3,7 +3,7 @@ package com.chrisluttazi.hasher
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-import org.apache.pekko.actor.{ ActorRef, ActorSystem }
+import org.apache.pekko.actor.{ActorRef, ActorSystem}
 import org.apache.pekko.http.scaladsl.Http
 import org.apache.pekko.http.scaladsl.server.Route
 
