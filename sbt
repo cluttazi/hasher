@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-
-./sbt-dist/bin/sbt "$@"
+# Delegates to the sbt on PATH (sbt 1.x reads project/build.properties).
+exec sbt "$@"
