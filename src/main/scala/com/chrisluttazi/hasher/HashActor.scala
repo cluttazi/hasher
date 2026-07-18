@@ -1,6 +1,6 @@
 package com.chrisluttazi.hasher
 
-import akka.actor.{ Actor, ActorLogging, Props }
+import org.apache.pekko.actor.{ Actor, ActorLogging, Props }
 
 final case class HashRequest(body: String)
 
@@ -10,7 +10,7 @@ object HashActor {
 
   final case class Hash(body: String)
 
-  def props: Props = Props[HashActor]
+  def props: Props = Props[HashActor]()
 }
 
 class HashActor extends Actor with ActorLogging {
