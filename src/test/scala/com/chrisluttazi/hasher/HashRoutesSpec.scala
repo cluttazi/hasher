@@ -19,7 +19,7 @@ class HashRoutesSpec extends WordSpec with Matchers with ScalaFutures with Scala
       val hashRequestEntity = Marshal(hashRequest).to[MessageEntity].futureValue
       val request = Post("/hash").withEntity(hashRequestEntity)
       request ~> routes ~> check {
-        status should ===(StatusCodes.Success)
+        status should ===(StatusCodes.Created)
         contentType should ===(ContentTypes.`application/json`)
         entityAs[String] should ===("""{"original":"","hashed":""}""")
       }
