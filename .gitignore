@@ -1,3 +1,8 @@
 *.class
-.idea
 target/
+.bsp/
+.idea/
+.metals/
+.bloop/
+.vscode/
+metals.sbt

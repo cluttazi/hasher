@@ -1,22 +1,22 @@
-lazy val akkaHttpVersion = "10.0.11"
-lazy val akkaVersion    = "2.5.11"
+lazy val pekkoVersion = "1.6.0"
+lazy val pekkoHttpVersion = "1.3.0"
 
-lazy val root = (project in file(".")).
-  settings(
-    inThisBuild(List(
-      organization    := "com.example",
-      scalaVersion    := "2.12.4"
-    )),
-    name := "akka-helloworld",
-    libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-http"            % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-http-xml"        % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-stream"          % akkaVersion,
-
-      "com.typesafe.akka" %% "akka-http-testkit"    % akkaHttpVersion % Test,
-      "com.typesafe.akka" %% "akka-testkit"         % akkaVersion     % Test,
-      "com.typesafe.akka" %% "akka-stream-testkit"  % akkaVersion     % Test,
-      "org.scalatest"     %% "scalatest"            % "3.0.1"         % Test
+lazy val root = (project in file(".")).settings(
+  inThisBuild(
+    List(
+      organization := "com.chrisluttazi",
+      scalaVersion := "2.13.18"
     )
+  ),
+  name := "hasher",
+  scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-Xlint"),
+  libraryDependencies ++= Seq(
+    "org.apache.pekko" %% "pekko-http" % pekkoHttpVersion,
+    "org.apache.pekko" %% "pekko-http-spray-json" % pekkoHttpVersion,
+    "org.apache.pekko" %% "pekko-stream" % pekkoVersion,
+    "org.apache.pekko" %% "pekko-http-testkit" % pekkoHttpVersion % Test,
+    "org.apache.pekko" %% "pekko-testkit" % pekkoVersion % Test,
+    "org.apache.pekko" %% "pekko-stream-testkit" % pekkoVersion % Test,
+    "org.scalatest" %% "scalatest" % "3.2.20" % Test
   )
+)
